@@ -12,34 +12,50 @@ import { api } from "@/convex/_generated/api";
 import { useMutation, useQuery } from "convex/react";
 
 const Page = () => {
-  // return (
-  //   <div className="min-h-full flex flex-col dark:bg-[#1F1F1F]">
-  //     <div
-  //       className="flex flex-col items-center justify-center md:justify-start
-  //     text-center gap-y-8 flex-1 px-6 pb-10"
-  //     >
-  //       <Heading />
-  //       <Heroes />
-  //     </div>
-  //     <Footer />
-  //   </div>
-  // );
   const documentId = "j57bc8v5v05e0w858qk5hfkd4h6yyryv"
 
   const document = useQuery(api.documents.getById, {
     documentId: documentId,
   });
 
+  const blocks = useQuery(api.blocks.getBlocks)
+  console.log("documents", document)
+  console.log("blocks", blocks)
   const update = useMutation(api.documents.update);
+  const updateBlock = useMutation(api.blocks.update);
+  const createBlock = useMutation(api.blocks.create);
 
-  const onChange = (content) => {
-    update({
-      id: documentId,
-      content,
-    });
-  };
+  // const onChange = (content) => {
+  //   update({
+  //     id: documentId,
+  //     content,
+  //   });
+  // };
+  const onChange = (content, blockId) => {
+    const existingBlock = useQuery(api.blocks.getBlockbyId, {
+      id: blockId
+    })
 
-  if (document === undefined) {
+    if (existingBlock) {
+      updateBlock({
+        id: blockId,
+        content
+      });
+    }
+    else{
+      createBlock({
+        id: blockId,
+        text: content,
+        tags: [],
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      });
+    }
+
+
+}
+
+  if (document == undefined) {
     return (
       <div>
         <Cover.Skeleton />
@@ -63,8 +79,10 @@ const Page = () => {
     <div className="py-32">
       {/* <Cover url={document.coverImage} /> */}
       <div className="md:max-w-3xl lg:max-w-4xl mx-auto">
-        <Toolbar initialData={document} />
-        <Editor onChange={onChange} initialContent={document.content} />
+        {/* <Toolbar initialData={document} />
+        <Editor onChange={onChange} initialContent={document.content} /> */}
+        <Toolbar initialData={blocks} />
+        <Editor onChange={onChange} initialContent={blocks} />
       </div>
     </div>
   );

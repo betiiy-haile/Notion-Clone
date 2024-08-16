@@ -4,10 +4,6 @@ import { useEdgeStore } from "@/lib/edgestore";
 import "@blocknote/core/style.css";
 import { BlockNoteView, useBlockNote } from "@blocknote/react";
 import { useTheme } from "next-themes";
-// import { useTheme } from "next-themes";
-// import { BlockNoteView, useBlockNote } from "@blocknote/react";
-
-// import { useEdgeStore } from "@/lib/edgestore";
 
 const Editor = ({ onChange, initialContent, editable }) => {
   const { resolvedTheme } = useTheme();
@@ -23,9 +19,11 @@ const Editor = ({ onChange, initialContent, editable }) => {
 
   const editor = useBlockNote({
     editable,
-    initialContent: initialContent ? JSON.parse(initialContent) : undefined,
+    initialContent: initialContent == [] ? JSON.parse(initialContent) : undefined,
     onEditorContentChange: (editor) => {
-      onChange(JSON.stringify(editor.topLevelBlocks, null, 2));
+      console.log("editor.topLevelBlocks", editor.topLevelBlocks[0].id);
+      console.log("editor", editor,);
+      // onChange(JSON.stringify(editor.topLevelBlocks, null, 2), editor.topLevelBlocks[0].id);
     },
     uploadFile: handleUpload,
   });
