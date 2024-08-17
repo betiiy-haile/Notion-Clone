@@ -19,41 +19,14 @@ const Page = () => {
   });
 
   const blocks = useQuery(api.blocks.getBlocks)
-  console.log("documents", document)
-  console.log("blocks", blocks)
   const update = useMutation(api.documents.update);
-  const updateBlock = useMutation(api.blocks.update);
-  const createBlock = useMutation(api.blocks.create);
 
-  // const onChange = (content) => {
-  //   update({
-  //     id: documentId,
-  //     content,
-  //   });
-  // };
-  const onChange = (content, blockId) => {
-    const existingBlock = useQuery(api.blocks.getBlockbyId, {
-      id: blockId
-    })
-
-    if (existingBlock) {
-      updateBlock({
-        id: blockId,
-        content
-      });
-    }
-    else{
-      createBlock({
-        id: blockId,
-        text: content,
-        tags: [],
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
-      });
-    }
-
-
-}
+  const onChange = (content) => {
+    update({
+      id: documentId,
+      content,
+    });
+  };
 
   if (document == undefined) {
     return (
@@ -75,14 +48,14 @@ const Page = () => {
     return <div>Not found</div>;
   }
 
+
   return (
     <div className="py-32">
-      {/* <Cover url={document.coverImage} /> */}
       <div className="md:max-w-3xl lg:max-w-4xl mx-auto">
-        {/* <Toolbar initialData={document} />
-        <Editor onChange={onChange} initialContent={document.content} /> */}
-        <Toolbar initialData={blocks} />
-        <Editor onChange={onChange} initialContent={blocks} />
+        <Toolbar initialData={document} />
+        <Editor onChange={onChange} initialContent={document.content} />
+        {/* <Toolbar initialData={blocks} />
+        <Editor onChange={onChange} initialContent={blocks} /> */}
       </div>
     </div>
   );

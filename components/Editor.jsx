@@ -19,11 +19,11 @@ const Editor = ({ onChange, initialContent, editable }) => {
 
   const editor = useBlockNote({
     editable,
-    initialContent: initialContent == [] ? JSON.parse(initialContent) : undefined,
+    initialContent: initialContent  ? JSON.parse(initialContent) : undefined,
     onEditorContentChange: (editor) => {
-      console.log("editor.topLevelBlocks", editor.topLevelBlocks[0].id);
+      console.log("editor.topLevelBlocks", editor.topLevelBlocks);
       console.log("editor", editor,);
-      // onChange(JSON.stringify(editor.topLevelBlocks, null, 2), editor.topLevelBlocks[0].id);
+      onChange(JSON.stringify(editor.topLevelBlocks, null, 2));
     },
     uploadFile: handleUpload,
   });
