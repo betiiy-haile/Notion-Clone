@@ -135,6 +135,8 @@ export const update = mutation({
   },
 });
 
+
+
 export const removeCoverImage = mutation({
   args: { id: v.id("documents") },
   handler: async (ctx, args) => {

@@ -74,8 +74,7 @@ const Toolbar = ({ initialData, preview }) => {
           onClick={enableInput}
           className="pb-[11.5px] text-5xl font-bold break-words outline-none text-[#3F3F3F] dark:text-[#CFCFCF]"
         >
-          {/* {initialData.title} */}
-          new document
+          {initialData.title}
         </div>
       )}
     </div>

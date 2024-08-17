@@ -1,8 +1,4 @@
 'use client'
-// import { Footer } from "./_components/Footer";
-// import Heading from "./_components/Heading";
-// import React from "react";
-// import { Heroes } from "./_components/Heroes";
 
 import Cover from "@/components/Cover";
 import Editor from "@/components/Editor";
