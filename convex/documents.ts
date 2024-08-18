@@ -29,15 +29,15 @@ export const create = mutation({
   },
   handler: async (ctx, args) => {
 
-    const document = await ctx.db.insert("documents", {
-      title: args.title,
-      parentDocument: args.parentDocument,
-      userId: "me",
-      isArchived: false,
-      isPublished: false,
-    });
+    // const document = await ctx.db.insert("documents", {
+    //   title: args.title,
+    //   parentDocument: args.parentDocument,
+    //   userId: "me",
+    //   isArchived: false,
+    //   isPublished: false,
+    // });
 
-    return document;
+    // return document;
   },
 });
 
@@ -113,25 +113,25 @@ export const update = mutation({
   args: {
     id: v.id("documents"),
     title: v.optional(v.string()),
-    content: v.optional(v.string()),
+    content: v.array(v.object({})),
     coverImage: v.optional(v.string()),
     icon: v.optional(v.string()),
     isPublished: v.optional(v.boolean()),
   },
   handler: async (ctx, args) => {
     const { id, ...rest } = args;
-
+    console.log("rest", rest)
     const existingDocument = await ctx.db.get(args.id);
 
     if (!existingDocument) {
       throw new Error("Not found");
     }
 
-    const document = await ctx.db.patch(args.id, {
-      ...rest,
-    });
+    // const document = await ctx.db.patch(args.id, {
+    //   ...rest,
+    // });
 
-    return document;
+    // return document;
   },
 });
 

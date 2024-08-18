@@ -18,10 +18,12 @@ const Page = () => {
   const update = useMutation(api.documents.update);
 
   const onChange = (content) => {
+    console.log("content", content)
     update({
       id: documentId,
       content,
     });
+    console.log("after update")
   };
 
   if (document == undefined) {
