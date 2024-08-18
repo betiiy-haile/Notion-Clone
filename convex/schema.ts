@@ -1,79 +1,32 @@
 import { defineSchema, defineTable } from "convex/server";
 import { v } from "convex/values";
 
-// export default defineSchema({
-//   documents: defineTable({
-//     title: v.string(),
-//     userId: v.string(),
-//     isArchived: v.boolean(),
-//     parentDocument: v.optional(v.id("documents")),
-//     content: v.optional(v.string()),
-//     coverImage: v.optional(v.string()),
-//     icon: v.optional(v.string()),
-//     isPublished: v.boolean(),
-//   })
-//     .index("by_user", ["userId"])
-//     .index("by_user_parent", ["userId", "parentDocument"]),
-// });
-
 
 export default defineSchema({
   documents: defineTable({
-    title: v.string(),
-    userId: v.string(),
-    isArchived: v.boolean(),
-    parentDocument: v.optional(v.id("documents")),
     content: v.array(
       v.object({
-        id: v.id("blocks"),
-        type: v.string(),
+        children: v.array(v.any()),
+        content: v.array(
+          v.object({
+            styles: v.object({}),
+            text: v.string(),
+            type: v.string(),
+          })
+        ),
+        createdAt: v.optional(v.string()),
+        id: v.string(),
         props: v.object({
-          textColor: v.string(),
           backgroundColor: v.string(),
           textAlignment: v.string(),
+          textColor: v.string(),
         }),
         tags: v.array(v.string()),
-        createdAt: v.string(),
-        updatedAt: v.string(),
-        content: v.array(v.string()),
-        children: v.array(v.id("blocks")),
+        type: v.optional(v.string()),
+        updatedAt: v.optional(v.string()),
       })
     ),
-    coverImage: v.optional(v.string()),
-    icon: v.optional(v.string()),
-    isPublished: v.boolean(),
-  })
-    .index("by_user", ["userId"])
-    .index("by_user_parent", ["userId", "parentDocument"]),
+    title: v.string(),
+  }),
 });
-
-
-
-// import { defineSchema, defineTable } from "convex/server";
-// import { v } from "convex/values";
-
-// export default defineSchema({
-//   blocks: defineTable({
-//     id: v.id('blocks'), 
-//     text: v.string(), 
-//     createdAt: v.string(), 
-//     updatedAt: v.string(), 
-//     tags: v.array(v.string()), 
-//   })
-//     .index("by_tags", ["tags"])
-//     .index("by_created_at", ["createdAt"])
-//     .index("by_updated_at", ["updatedAt"]),
-//   documents: defineTable({
-//       title: v.string(),
-//       userId: v.string(),
-//       isArchived: v.boolean(),
-//       parentDocument: v.optional(v.id("documents")),
-//       content: v.optional(v.string()),
-//       coverImage: v.optional(v.string()),
-//       icon: v.optional(v.string()),
-//       isPublished: v.boolean(),
-//     })
-//       .index("by_user", ["userId"])
-//       .index("by_user_parent", ["userId", "parentDocument"]),
-// });
 

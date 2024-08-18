@@ -8,22 +8,22 @@ import { api } from "@/convex/_generated/api";
 import { useMutation, useQuery } from "convex/react";
 
 const Page = () => {
-  const documentId = "j57bc8v5v05e0w858qk5hfkd4h6yyryv"
-
+  const documentId = "j575nnaaw0wz5t3nksmfy1cvks6z2gej"
+  
   const document = useQuery(api.documents.getById, {
     documentId: documentId,
   });
-
-  const blocks = useQuery(api.blocks.getBlocks)
   const update = useMutation(api.documents.update);
 
   const onChange = (content) => {
-    console.log("content", content)
+    const filterd = content.filter(item => item.content != [] && item.content[0]?.text.trim() !== "")
+    console.log("filtered", filterd)
+
     update({
       id: documentId,
-      content,
+      title: document.title,
+      content: filterd,
     });
-    console.log("after update")
   };
 
   if (document == undefined) {
@@ -52,8 +52,7 @@ const Page = () => {
       <div className="md:max-w-3xl lg:max-w-4xl mx-auto">
         <Toolbar initialData={document} />
         <Editor onChange={onChange} initialContent={document.content} />
-        {/* <Toolbar initialData={blocks} />
-        <Editor onChange={onChange} initialContent={blocks} /> */}
+        
       </div>
     </div>
   );

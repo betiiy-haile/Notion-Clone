@@ -1,14 +1,13 @@
 import {
     useBlockNoteEditor,
     useComponentsContext,
-    useEditorContentOrSelectionChange,
 } from "@blocknote/react";
 import "@blocknote/mantine/style.css";
 import { useState } from "react";
 import { Popover, Menu } from "@mantine/core";
 
 // Custom Formatting Toolbar Button to toggle blue text & background color.
-export  function TagsButton({ block  }) {
+export  function TagsButton({ block, handleChange, initialContent }) {
     const editor = useBlockNoteEditor();
     const Components = useComponentsContext();
 
@@ -16,9 +15,9 @@ export  function TagsButton({ block  }) {
 
     const tags = ["School", "Work", "Project", "Todos"];
 
-    const handleClick = (tag) => {
+    // const handleClick = (tag) => {
             
-        }
+    //     }
 
     return (
         <div>
@@ -40,22 +39,23 @@ export  function TagsButton({ block  }) {
                                 key={index}
                                 className="!text-[12px] !font-light !rounded hover:bg-[#121212]"
                                 onClick={() => {
-                                    if (block.tags === undefined) {
-                                        block.tags = [];
-                                        block.tags.push(tag);
-                                        setSelectedTag(tag);
-                                        // onChange(JSON.stringify(editor.document, null, 2));
-                                    } else if (block.tags.includes(tag)) {
-                                        block.tags = block.tags.filter((t) => t !== tag);
-                                        setSelectedTag(null);
-                                        return;
-                                        // onChange(JSON.stringify(editor.document, null, 2));
-                                    } else {
-                                        block.tags.push(tag);
-                                        setSelectedTag(tag);
-                                        // onChange(JSON.stringify(editor.document, null, 2));
+                                    const exisitingBlock = initialContent.find((item) => item.id == block.id )
+                                    if (exisitingBlock) {
+                                        console.log("Existing", exisitingBlock)
+                                        if (!exisitingBlock.tags){
+                                            exisitingBlock.tags = []
+                                            exisitingBlock.tags.push(tag)
+                                            setSelectedTag(tag)
+                                        }else if (exisitingBlock.tags.includes(tag)){
+                                            exisitingBlock.tags = exisitingBlock.tags.filter((t) => t !== tag);
+                                            setSelectedTag(null)
+                                        }else{
+                                            exisitingBlock.tags.push(tag)
+                                            setSelectedTag(tag)
+                                        }                                        
                                     }
-                                    console.log("block", block);
+                                    handleChange(exisitingBlock)
+                                    console.log("block", exisitingBlock);
                                 }}
                             >
                                 {tag}

@@ -9,11 +9,11 @@ import { useMutation, useQuery } from "convex/react";
 
 
 const DocumentIdPage = ({ params }) => {
-  const documentId = "j57bc8v5v05e0w858qk5hfkd4h6yyryv"
+  // const documentId = "j57bdjdxbbvg9t2yzw1z9tbtsh6z26dp"
 
-  const document = useQuery(api.documents.getById, {
-    documentId: documentId,
-  });
+  // const document = useQuery(api.documents.getById, {
+  //   documentId: documentId,
+  // });
 
   const update = useMutation(api.documents.update);
 
@@ -48,8 +48,8 @@ const DocumentIdPage = ({ params }) => {
     <div className="py-32">
       {/* <Cover url={document.coverImage} /> */}
       <div className="md:max-w-3xl lg:max-w-4xl mx-auto">
-        <Toolbar initialData={document} />
-        <Editor onChange={onChange} initialContent={document.content} />
+        {/* <Toolbar initialData={document} />
+        <Editor onChange={onChange} initialContent={document.content} /> */}
       </div>
     </div>
   );

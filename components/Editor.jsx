@@ -36,72 +36,64 @@ const Editor = ({ onChange, initialContent, editable }) => {
     return response.url;
   };
 
-
-  const [blocks, setBlocks] = useState(initialContent ? JSON.parse(initialContent) : []);
+  // console.log("initial content", initialContent)
+  const [blocks, setBlocks] = useState(initialContent ? initialContent : []);
   const editor = useCreateBlockNote({
     initialContent: blocks    
   })
 
-  console.log("editor", editor)
-  // const editor = useBlockNote({
-  //   editable,
-  //   initialContent: initialContent ? JSON.parse(initialContent) : [],
-  //   onEditorContentChange: (editor) => {
-  //     // const currentBlock = editor.getTextCursorPosition().block;
-  //     // const newBlock = {
-  //     //   ...currentBlock,
-  //     //   createdAt: new Date().toISOString(),
-  //     //   updatedAt: new Date().toISOString(),
-  //     //   tags: ["test"],
-  //     // };
+  const handleChange = (currentBlock) => {
+    const exisitingBlock = initialContent.find((block) => block.id == currentBlock.id);
 
-  //     // const updatedBlocks = editor.topLevelBlocks.map((block) => {
-  //     //   if (block.id === currentBlock.id) {
-  //     //     return newBlock;
-  //     //   }
-  //     //   return block;
-  //     // });
-
-  //     // console.log("updated Blocks", updatedBlocks);
-  //     // console.log("newBlock", newBlock);
-  //     console.log("onchange")
-  //     onChange(JSON.stringify(editor.topLevelBlocks, null, 2));
-  //   },
-  //   uploadFile: handleUpload,
-  // });                                    
+    if (exisitingBlock) {
+      const updatedBlocks = initialContent.map((block) => {
+        if (block.id == currentBlock.id) {
+          const now = new Date().toISOString();
+          return {
+            ...currentBlock,
+            createdAt: block.createdAt,
+            updatedAt: now,
+          };
+        } else {
+          return block;
+        }
+      });
+      onChange(updatedBlocks.filter((block) => block.content != [] || block.content.text?.trim() !== ''));
+    } else {
+      const updatedBlocks = [
+        ...initialContent,
+        {
+          ...currentBlock,
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+        },
+      ];
+      onChange(updatedBlocks.filter((block) => block.content != [] || block.content.text?.trim() !== ''));
+      }
+  };                                
 
   return (
     <div>
-      {/* <BlockNoteView
-        editor={editor}
-        theme={resolvedTheme === "dark" ? "dark" : "light"}
-      /> */}
 
-
-
-      {/* <BlockNoteView
-        editor={editor}
-        onChange={() => {
-          onChange(JSON.stringify(editor.document, null, 2));
-        }}
-        onSelectionChange={() => {
-          const selection = editor.getSelection();
-          console.log("selection", selection);
-        }}
-        uploadFile={handleUpload}
-      /> */}
-
-
-
-   <BlockNoteView editor={editor} onChange={() => {
-        onChange(JSON.stringify(editor.document, null, 2));
-      }} formattingToolbar={false}>
+   <BlockNoteView 
+      editor={editor} 
+      onChange={() => {
+        const currentBlock = editor.getTextCursorPosition().block
+        console.log("currentBlock", currentBlock)
+        if (!currentBlock.tags) {
+          currentBlock.tags = []
+        }
+        handleChange(currentBlock)
+        }} 
+      formattingToolbar={false} 
+      // uploadfile={handleUpload}
+      >
         <FormattingToolbarController
           formattingToolbar={() => (
             <FormattingToolbar>
               <BlockTypeSelect key={"blockTypeSelect"} />
 
-              <TagsButton block={editor.getTextCursorPosition().block}  key={"tagsButton"} />
+              <TagsButton block={editor.getTextCursorPosition().block} initialContent={initialContent} handleChange={handleChange}  key={"tagsButton"} />
 
 
               <FileCaptionButton key={"fileCaptionButton"} />
