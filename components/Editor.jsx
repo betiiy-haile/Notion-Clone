@@ -36,7 +36,7 @@ const Editor = ({ onChange, initialContent, editable }) => {
     return response.url;
   };
 
-  // console.log("initial content", initialContent)
+  console.log("initial content", initialContent)
   const [blocks, setBlocks] = useState(initialContent ? initialContent : []);
   const editor = useCreateBlockNote({
     initialContent: blocks    

@@ -14,7 +14,6 @@ const Page = () => {
     documentId: documentId,
   });
   const update = useMutation(api.documents.update);
-
   const onChange = (content) => {
     const filterd = content.filter(item => item.content != [] && item.content[0]?.text.trim() !== "")
     console.log("filtered", filterd)
