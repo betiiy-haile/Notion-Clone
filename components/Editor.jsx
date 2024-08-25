@@ -27,6 +27,11 @@ const Editor = ({ onChange, initialContent, editable }) => {
   const { resolvedTheme } = useTheme();
   const { edgestore } = useEdgeStore();
 
+  console.log("initial content", initialContent)
+  const [blocks, setBlocks] = useState(initialContent ? initialContent : []);
+  const editor = useCreateBlockNote({
+    initialContent: blocks
+  }) 
 
   const handleUpload = async (file) => {
     const response = await edgestore.publicFiles.upload({
@@ -36,11 +41,7 @@ const Editor = ({ onChange, initialContent, editable }) => {
     return response.url;
   };
 
-  console.log("initial content", initialContent)
-  const [blocks, setBlocks] = useState(initialContent ? initialContent : []);
-  const editor = useCreateBlockNote({
-    initialContent: blocks    
-  })
+
 
   const handleChange = (currentBlock) => {
     const exisitingBlock = initialContent.find((block) => block.id == currentBlock.id);
